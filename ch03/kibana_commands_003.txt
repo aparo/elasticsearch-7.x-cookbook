@@ -1,0 +1,371 @@
+PUT /myorder
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 2,
+      "number_of_replicas": 1
+    }
+  }
+}
+
+DELETE /myorder
+
+DELETE /_all
+
+POST /myorder/_close
+
+
+POST /myorder/_open
+
+PUT /myorder
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "date": {
+          "type": "date"
+        },
+        "customer_id": {
+          "type": "keyword"
+        },
+        "sent": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "text"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "vat": {
+          "type": "double",
+          "index": "false"
+        }
+      }
+    }
+  }
+}
+
+
+PUT /myorder/_doc/_mapping
+{
+  "_doc": {
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "date": {
+        "type": "date"
+      },
+      "customer_id": {
+        "type": "keyword"
+      },
+      "sent": {
+        "type": "boolean"
+      },
+      "name": {
+        "type": "text"
+      },
+      "quantity": {
+        "type": "integer"
+      },
+      "vat": {
+        "type": "double",
+        "index": false
+      }
+    }
+  }
+}
+
+GET /myorder/_doc/_mapping
+
+POST /_reindex
+{
+  "source": {
+    "index": "myorder"
+  },
+  "dest": {
+    "index": "myorder2"
+  }
+}
+
+POST /myorder/_refresh
+
+
+POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?refresh=true
+{
+  "id": "1234",
+  "date": "2013-06-07T12:14:54",
+  "customer_id": "customer1",
+  "sent": true,
+  "in_stock_items": 0,
+  "items": [
+    {
+      "name": "item1",
+      "quantity": 3,
+      "vat": 20
+    },
+    {
+      "name": "item2",
+      "quantity": 2,
+      "vat": 20
+    },
+    {
+      "name": "item3",
+      "quantity": 1,
+      "vat": 10
+    }
+  ]
+}
+
+POST /myorder/_forcemerge
+
+#shrink an index
+GET /_nodes
+
+PUT /myorder/_settings
+{
+  "settings": {
+    "index.routing.allocation.require._name": "iMacParo.local",
+    "index.blocks.write": true
+  }
+}
+
+GET /_cluster/health
+
+PUT /myorder/_settings
+{
+  "index.blocks.write":true
+}
+
+
+POST /myorder/_shrink/reduced_index
+{
+  "settings": {
+    "index.number_of_replicas": 1,
+    "index.number_of_shards": 1,
+    "index.codec": "best_compression"
+  },
+  "aliases": {
+    "my_search_indices": {}
+  }
+}
+
+
+GET /_cluster/health?wait_for_status=yellow
+
+PUT /myorder/_settings
+{
+  "index.blocks.write":false
+}
+
+#Checking if an index or type exists
+
+HEAD /myorder/
+
+
+#Managing index settings
+
+GET /myorder/_settings
+
+PUT /myorder/_settings
+{
+  "index": {
+    "number_of_replicas": "2"
+  }
+}
+
+
+PUT /myorder/_settings
+{
+  "index": {
+    "refresh_interval": "-1"
+  }
+}
+
+PUT /myorder/_settings
+{
+  "index": {
+    "refresh_interval": "1s"
+  }
+}
+
+POST /myorder/_force_merge?max_num_segments=1
+
+# Using index aliases
+GET /_aliases
+
+GET /myorder/_alias
+
+PUT /myorder/_alias/myalias1
+
+DELETE /myorder/_alias/myalias1
+
+
+POST /myorder/_aliases/user1alias
+{
+  "filter": {
+    "term": {
+      "user": "user_1"
+    }
+  },
+  "search_routing": "1,2",
+  "index_routing": "2"
+}
+
+# Rollover an index
+
+PUT /mylogs-000001
+{
+  "aliases": {
+    "logs_write": {}
+  }
+}
+
+POST /logs_write/_rollover
+{
+  "conditions": {
+    "max_age": "7d",
+    "max_docs": 100000
+  },
+  "settings": {
+    "index.number_of_shards": 3
+  }
+}
+
+DELETE /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
+
+# Indexing a document
+
+POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?timeout=5m
+{
+  "id": "1234",
+  "date": "2013-06-07T12:14:54",
+  "customer_id": "customer1",
+  "sent": true,
+  "in_stock_items": 0,
+  "items": [
+    {
+      "name": "item1",
+      "quantity": 3,
+      "vat": 20
+    },
+    {
+      "name": "item2",
+      "quantity": 2,
+      "vat": 20
+    },
+    {
+      "name": "item3",
+      "quantity": 1,
+      "vat": 10
+    }
+  ]
+}
+
+# Get a document
+
+GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
+
+GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?preference=_local
+
+GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?stored_fields=date,sent
+
+GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?routing=customer_id
+
+GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?_source=id,sent,items.*
+
+GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_source
+
+
+# Delete a document
+
+DELETE /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
+
+# Update a document
+
+POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+{
+  "script": {
+    "source": "ctx._source.in_stock_items += params.count",
+    "params": {
+      "count": 4
+    }
+  }
+}
+
+
+POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+{
+  "script": {
+    "source": "ctx._source.in_stock_items += params.count",
+    "params": {
+      "count": 4
+    }
+  },
+  "upsert": {
+    "in_stock_items": 4
+  }
+}
+
+
+POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+{
+  "doc": {
+    "in_stock_items": 10
+  }
+}
+
+POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+{
+  "doc": {
+    "in_stock_items": 10
+  },
+  "doc_as_upsert": true
+}
+
+#using bulk
+
+POST /myorder/_bulk
+{ "index":{ "_index":"myorder", "_type":"_doc", "_id":"1" } }
+{ "field1" : "value1", "field2" : "value2" }
+{ "delete":{ "_index":"myorder", "_type":"_doc", "_id":"2" } }
+{ "create":{ "_index":"myorder", "_type":"_doc", "_id":"3" } }
+{ "field1" : "value1", "field2" : "value2" }
+{ "update":{ "_index":"myorder", "_type":"_doc", "_id":"3" } }
+{ "doc":{"field1" : "value1", "field2" : "value2" }}
+
+#using Mget
+
+POST /_mget
+{
+  "docs": [
+    {
+      "_index": "myorder",
+      "_type": "_doc",
+      "_id": "2qLrAfPVQvCRMe7Ku8r0Tw"
+    },
+    {
+      "_index": "myorder",
+      "_type": "_doc",
+      "_id": "2"
+    }
+  ]
+}
+
+
+GET /test/type/_mget
+{
+  "ids": [
+    "1",
+    "2"
+  ]
+}
+
