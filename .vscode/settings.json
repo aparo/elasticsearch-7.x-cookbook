@@ -1,0 +1,5 @@
+{
+    "plantuml.diagramsRoot": "images/src",
+    "plantuml.exportOutDir": "images/out",
+    "python.pythonPath": "/usr/local/bin/python3"
+}
