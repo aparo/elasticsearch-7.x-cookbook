@@ -127,6 +127,9 @@ PUT /mybooks-join
         "price": {
           "type": "double"
         },
+        "rating": {
+          "type": "double"
+        },
         "description": {
           "term_vector": "with_positions_offsets",
           "store": true,
@@ -161,6 +164,17 @@ PUT /mybooks-join
               "ignore_above": 256
             }
           }
+        },
+        "versions": {
+          "type": "nested",
+          "properties": {
+            "color": {
+              "type": "keyword"
+            },
+            "size": {
+              "type": "integer"
+            }
+          }
         }
       }
     }
@@ -169,18 +183,48 @@ PUT /mybooks-join
 
 POST _bulk?refresh
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"1"}}
-{"uuid":"11111","position":1,"title":"Joe Tester","description":"Joe Testere nice guy","date":"2015-10-22","price":4.3,"quantity":50,"join": {"name": "book"}}
+{"uuid":"11111","position":1,"title":"Joe Tester","description":"Joe Testere nice guy","date":"2015-10-22","price":4.3,"quantity":50,"join": {"name": "book"}, "versions":[{"color":"yellow", "size":5},{"color":"blue", "size":15}]}
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"a1", "routing":"1"}}
-{"name":"Peter","surname":"Doyle","join": {"name": "author", "parent":"1"}}
+{"name":"Peter","surname":"Doyle","rating":4.5,"join": {"name": "author", "parent":"1"}}
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"a12", "routing":"1"}}
-{"name":"Mark","surname":"Twain","join": {"name": "author", "parent":"1"}}
+{"name":"Mark","surname":"Twain","rating":4.2,"join": {"name": "author", "parent":"1"}}
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"2"}}
-{"uuid":"22222","position":2,"title":"Bill Baloney","description":"Bill Testere nice guy","date":"2016-06-12","price":5,"quantity":34,"join": {"name": "book"}}
+{"uuid":"22222","position":2,"title":"Bill Baloney","description":"Bill Testere nice guy","date":"2016-06-12","price":5,"quantity":34,"join": {"name": "book"}, "versions":[{"color":"red", "size":2},{"color":"blue", "size":10}]}
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"a2", "routing":"2"}}
-{"name":"Agatha","surname":"Princeton","join": {"name": "author", "parent":"2"}}
+{"name":"Agatha","surname":"Princeton","rating":2.1,"join": {"name": "author", "parent":"2"}}
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"3"}}
-{"uuid":"33333","position":3,"title":"Bill Klingon","description":"Bill is not\n                nice guy","date":"2017-09-21","price":6,"quantity":33,"join": {"name": "book"}}
+{"uuid":"33333","position":3,"title":"Bill Klingon","description":"Bill is not\n                nice guy","date":"2017-09-21","price":6,"quantity":33,"join": {"name": "book"}, "versions":[{"color":"red", "size":2}]}
 {"index":{"_index":"mybooks-join", "_type":"_doc", "_id":"a3", "routing":"3"}}
-{"name":"Martin","surname":"Twisted","join": {"name": "author", "parent":"3"}}
+{"name":"Martin","surname":"Twisted","rating":3.2,"join": {"name": "author", "parent":"3"}}
+
 
 POST /mybooks-join/_refresh
+
+#creating geo index
+
+DELETE /mygeo-index
+
+PUT /mygeo-index
+{
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "pin": {
+          "properties": {
+            "location": {
+              "type": "geo_point"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+PUT /mygeo-index/_doc/1
+{"pin": {"location": {"lat": 40.12, "lon": -71.34}}}
+
+PUT /mygeo-index/_doc/2
+{"pin": {"location": {"lat": 40.12, "lon": 71.34}}}
+
+POST /mygeo-index/_refresh
