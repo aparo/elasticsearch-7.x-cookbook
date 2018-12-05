@@ -365,5 +365,49 @@ POST /mybooks/_search
 }
 
 
+# template search
+POST /_search/template
+{
+  "source": {
+    "query": {
+      "term": {
+        "uuid": "{{value}}"
+      }
+    }
+  },
+  "params": {
+    "value": "22222"
+  }
+}
+
+POST _scripts/myTemplate
+{
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "term": {
+          "uuid": "{{value}}"
+        }
+      }
+    }
+  }
+}
+
+POST /mybooks/_search/template
+{
+  "id": "myTemplate",
+  "params": {
+    "value": "22222"
+  }
+}
+
+POST /_render/template
+{
+  "id": "myTemplate",
+  "params": {
+    "value": "22222"
+  }
+}
 
 
