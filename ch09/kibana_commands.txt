@@ -40,9 +40,26 @@ GET /_cluster/allocation/explain
 
 GET /_cluster/allocation/explain
 {
-
-"index": ".monitoring-es-2-2016.10.27",
-
-"shard": 0, "primary": false
-
+  "index": "mybooks",
+  "shard": 0,
+  "primary": false
 }
+
+
+POST /_cluster/reroute
+{
+  "commands": [
+    {
+      "move": {
+        "index": "test-index",
+        "shard": 0,
+        "from_node": "node1",
+        "to_node": "node2"
+      }
+    }
+  ]
+}
+
+GET /mybooks/_segments
+
+POST /mybooks/_cache/clear

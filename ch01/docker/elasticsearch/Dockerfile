@@ -2,7 +2,7 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:7.0.0-alpha2
 
 ADD config/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
-
+RUN mkdir -p /backup/ && chmod +w /backup
 # Add your elasticsearch plugins setup here
 RUN elasticsearch-plugin install analysis-icu
 RUN elasticsearch-plugin install analysis-smartcn
