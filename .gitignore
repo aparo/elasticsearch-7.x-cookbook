@@ -1,0 +1,18 @@
+# pypi
+/build
+/dist
+
+# do not wants
+*.py[c|o]
+*.egg-info
+*.egg
+.*.swp
+.DS_Store
+*.zip
+
+# IDEs
+.idea
+.project
+*.iml
+
+target/
