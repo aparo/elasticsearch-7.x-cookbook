@@ -15,12 +15,11 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.script.Script;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 public class DocumentOperations {
 
 
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args) {
         String index = "mytest";
         String type = "mytype";
         RestHighLevelClient client = RestHighLevelClientHelper.createHighLevelClient();
@@ -49,6 +48,7 @@ public class DocumentOperations {
 
             IndexResponse ir = client.index(new IndexRequest(index, type, "2").source("text", "unicorn"), RequestOptions.DEFAULT);
             System.out.println("Version: " + ir.getVersion());
+
             GetResponse gr = client.get(new GetRequest(index, type, "2"), RequestOptions.DEFAULT);
             System.out.println("Version: " + gr.getVersion());
 

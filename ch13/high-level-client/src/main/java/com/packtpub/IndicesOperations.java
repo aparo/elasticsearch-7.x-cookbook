@@ -24,7 +24,6 @@ public class IndicesOperations {
 
     public void createIndex(String name) throws IOException {
         client.indices().create(new CreateIndexRequest(name), RequestOptions.DEFAULT);
-
     }
 
     public void deleteIndex(String name) throws IOException {

@@ -38,6 +38,7 @@ public class QueryExample {
         }
         qh.dropIndex(index);
 
+
         //we need to close the client to free resources
         client.close();
 

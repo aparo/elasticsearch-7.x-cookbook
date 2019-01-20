@@ -14,7 +14,6 @@ import java.io.IOException;
 
 public class BulkOperations {
 
-
     public static void main(String[] args) {
         String index = "mytest";
         String type = "mytype";
@@ -44,8 +43,8 @@ public class BulkOperations {
             for (int i = 1; i < 1000; i++) {
                 bulker.add(new IndexRequest(index, type, Integer.toString(i)).source("position", Integer.toString(i)));
             }
-            System.out.println("Number of actions for index: " + bulker.numberOfActions());
 
+            System.out.println("Number of actions for index: " + bulker.numberOfActions());
             client.bulk(bulker, RequestOptions.DEFAULT);
 
 
@@ -67,7 +66,6 @@ public class BulkOperations {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-
             //we need to close the client to free resources
             try {
                 client.close();

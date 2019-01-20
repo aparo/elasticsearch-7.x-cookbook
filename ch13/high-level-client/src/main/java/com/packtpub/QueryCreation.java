@@ -1,6 +1,7 @@
 package com.packtpub;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -35,9 +36,9 @@ public class QueryCreation {
                                         .startObject()
                                         .startObject(type)
                                         .startObject("properties")
-                                        .startObject("text").field("type", "integer").field("store", "yes").endObject()
-                                        .startObject("number1").field("type", "integer").field("store", "yes").endObject()
-                                        .startObject("number2").field("type", "integer").field("store", "yes").endObject()
+                                        .startObject("text").field("type", "integer").field("store", "true").endObject()
+                                        .startObject("number1").field("type", "integer").field("store", "true").endObject()
+                                        .startObject("number2").field("type", "integer").field("store", "true").endObject()
                                         .endObject()
                                         .endObject()
                                         .endObject()),
@@ -53,6 +54,7 @@ public class QueryCreation {
             }
 
             client.bulk(bulker, RequestOptions.DEFAULT);
+            client.indices().refresh(new RefreshRequest(index), RequestOptions.DEFAULT);
 
             TermQueryBuilder filter = termQuery("number2", 1);
             RangeQueryBuilder range = rangeQuery("number1").gt(500);
@@ -62,6 +64,9 @@ public class QueryCreation {
             SearchRequest searchRequest = new SearchRequest().indices(index).source(searchSourceBuilder);
             SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
             System.out.println("Matched records of elements: " + response.getHits().getTotalHits());
+
+            SearchResponse response2 = client.search(new SearchRequest().indices(index), RequestOptions.DEFAULT);
+            System.out.println("Matched records of elements: " + response2.getHits().getTotalHits());
 
             io.deleteIndex(index);
         } catch (IOException e) {

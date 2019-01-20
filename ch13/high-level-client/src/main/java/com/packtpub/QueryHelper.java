@@ -43,7 +43,7 @@ public class QueryHelper {
                                     .startObject("name")
                                     .field("type", "text")
                                     .field("term_vector", "with_positions_offsets")
-                                    .field("store", "yes")
+                                    .field("store", "true")
                                     .endObject()
                                     .startObject("tag")
                                     .field("type", "keyword")

@@ -7,13 +7,12 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 public class MappingOperations {
 
-    public static void main(String[] args) throws UnknownHostException {
+    public static void main(String[] args) {
         String index = "mytest";
         String type = "mytype";
         RestHighLevelClient client = RestHighLevelClientHelper.createHighLevelClient();
@@ -43,6 +42,7 @@ public class MappingOperations {
                 if (!response.isAcknowledged()) {
                     System.out.println("Something strange happens");
                 }
+
             } catch (IOException e) {
                 System.out.println("Unable to create mapping");
             }
