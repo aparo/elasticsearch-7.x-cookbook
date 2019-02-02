@@ -14,5 +14,8 @@
 .idea
 .project
 *.iml
+.metals
+.bloop
 
 target/
+images/out/
