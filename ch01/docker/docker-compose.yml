@@ -31,6 +31,16 @@ services:
     depends_on:
       - elasticsearch
 
+  elasticsearchhq:
+    image: elastichq/elasticsearch-hq
+    container_name: elasticsearchhq
+    ports:
+      - "5000:5000"
+    environment:
+      HQ_DEFAULT_URL: 'http://elasticsearch:9200'
+    depends_on:
+      - elasticsearch
+
 volumes:
   elasticsearch-data:
     driver: local
