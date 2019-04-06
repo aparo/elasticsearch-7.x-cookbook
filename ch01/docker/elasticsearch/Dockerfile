@@ -1,5 +1,5 @@
 # https://github.com/elastic/elasticsearch-docker
-FROM docker.elastic.co/elasticsearch/elasticsearch:7.0.0-beta1
+FROM docker.elastic.co/elasticsearch/elasticsearch:7.0.0-rc2
 
 ADD config/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 RUN mkdir -p /backup/ && chmod 777 /backup
