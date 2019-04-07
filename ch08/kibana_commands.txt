@@ -187,7 +187,7 @@ if(params.replace.containsKey(_value.toUpperCase())) {
 }
 
 # updating a document via scripting
-POST /index-agg/_doc/10/_update
+POST /index-agg/_update/10
 {
   "script": {
     "source": "ctx._source.age = ctx._source.age + params.sum",
@@ -199,7 +199,7 @@ POST /index-agg/_doc/10/_update
 
 GET /index-agg/_doc/10
 
-POST /index-agg/_doc/10/_update
+POST /index-agg/_update/10
 {
   "script": {
     "source": """

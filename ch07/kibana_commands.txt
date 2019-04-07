@@ -666,14 +666,12 @@ DELETE /index-pipagg
 PUT /index-pipagg
 {
   "mappings": {
-    "_doc": {
-      "properties": {
-        "type": {
-          "type": "keyword"
-        },
-        "date": {
-          "type": "date"
-        }
+    "properties": {
+      "type": {
+        "type": "keyword"
+      },
+      "date": {
+        "type": "date"
       }
     }
   }

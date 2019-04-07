@@ -12,61 +12,57 @@ DELETE test
 PUT test/_doc/1
 {"name":"Paul", "age":35}
 
-GET test/_doc/_mapping
+GET test/_mapping
 
-PUT test/_doc/_mapping
+PUT test/_mapping
 {
-  "_doc" : {
-    "properties" : {
-      "id" : {"type" : "keyword"},
-      "date" : {"type" : "date"},
-      "customer_id" : {"type" : "keyword"},
-      "sent" : {"type" : "boolean"},
-      "name" : {"type" : "keyword"},
-      "quantity" : {"type" : "integer"},
-      "vat" : {"type" : "double", "index":"false"}
-    }
+  "properties" : {
+    "id" : {"type" : "keyword"},
+    "date" : {"type" : "date"},
+    "customer_id" : {"type" : "keyword"},
+    "sent" : {"type" : "boolean"},
+    "name" : {"type" : "keyword"},
+    "quantity" : {"type" : "integer"},
+    "vat" : {"type" : "double", "index":"false"}
   }
 }
 
 PUT test
 
-PUT test/_doc/_mapping
+PUT test/_mapping
 {
-  "_doc": {
-    "properties": {
-      "join_field": {
-        "type": "join",
-        "relations": {
-          "order": "item"
-        }
-      },
-      "id": {
-        "type": "keyword",
-        "store": "true"
-      },
-      "date": {
-        "type": "date"
-      },
-      "customer_id": {
-        "type": "keyword",
-        "store": "true"
-      },
-      "sent": {
-        "type": "boolean"
-      },
-      "name": {
-        "type": "text"
-      },
-      "quantity": {
-        "type": "integer"
-      },
-      "price": {
-        "type": "double"
-      },
-      "vat": {
-        "type": "double"
+  "properties": {
+    "join_field": {
+      "type": "join",
+      "relations": {
+        "order": "item"
       }
+    },
+    "id": {
+      "type": "keyword",
+      "store": "true"
+    },
+    "date": {
+      "type": "date"
+    },
+    "customer_id": {
+      "type": "keyword",
+      "store": "true"
+    },
+    "sent": {
+      "type": "boolean"
+    },
+    "name": {
+      "type": "text"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "price": {
+      "type": "double"
+    },
+    "vat": {
+      "type": "double"
     }
   }
 }
@@ -94,23 +90,21 @@ PUT test/_doc/c1?routing=1&refresh
 }
 
 
-PUT test/_doc/_mapping
+PUT test/_mapping
 {
-  "_doc" : {
-    "properties" : {
-      "id" : {"type" : "keyword"},
-      "date" : {"type" : "date"},
-      "customer_id" : {"type" : "keyword"},
-      "sent" : {"type" : "boolean"},
-      "item" : {"type" : "object",
-        "properties" : {
-            "name" : {"type" : "keyword"},
-            "quantity" : {"type" : "long"},
-            "cost" : {"type": "alias", "path":"item.price"},
-            "price" : {"type" : "double"},
-            "vat" : {"type" : "double"}
-          }
-      }
+  "properties" : {
+    "id" : {"type" : "keyword"},
+    "date" : {"type" : "date"},
+    "customer_id" : {"type" : "keyword"},
+    "sent" : {"type" : "boolean"},
+    "item" : {"type" : "object",
+      "properties" : {
+          "name" : {"type" : "keyword"},
+          "quantity" : {"type" : "long"},
+          "cost" : {"type": "alias", "path":"item.price"},
+          "price" : {"type" : "double"},
+          "vat" : {"type" : "double"}
+        }
     }
   }
 }
@@ -146,17 +140,15 @@ GET test/_search
 PUT test-percolator
 {
   "mappings": {
-    "_doc" : {
-      "properties": {
-        "query" : {
-          "type" : "percolator"
-        },
-        "body" : {
-          "type": "text"
-         }
+    "properties": {
+      "query" : {
+        "type" : "percolator"
+      },
+      "body" : {
+        "type": "text"
        }
      }
-  }
+   }
 }
 
 PUT test-percolator/_doc/1?refresh
@@ -183,15 +175,13 @@ GET test-percolator/_search
 PUT test-feature
 {
   "mappings": {
-    "_doc": {
-      "properties": {
-        "pagerank": {
-          "type": "feature" 
-        },
-        "url_length": {
-          "type": "feature",
-          "positive_score_impact": false 
-        }
+    "properties": {
+      "pagerank": {
+        "type": "feature" 
+      },
+      "url_length": {
+        "type": "feature",
+        "positive_score_impact": false 
       }
     }
   }
@@ -222,11 +212,9 @@ GET test-feature/_search
 PUT test-features
 {
   "mappings": {
-    "_doc": {
-      "properties": {
-        "categories": {
-          "type": "feature_vector" 
-        }
+    "properties": {
+      "categories": {
+        "type": "feature_vector" 
       }
     }
   }

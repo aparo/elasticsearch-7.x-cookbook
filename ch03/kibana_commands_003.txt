@@ -1,71 +1,26 @@
-PUT /myorder
-{
-  "settings": {
-    "index": {
-      "number_of_shards": 2,
-      "number_of_replicas": 1
-    }
-  }
-}
-
-DELETE /myorder
+DELETE /myindex
 
 DELETE /_all
 
-POST /myorder/_close
-
-
-POST /myorder/_open
-
-PUT /myorder
+PUT /myindex
 {
   "settings": {
     "number_of_shards": 2,
     "number_of_replicas": 1
   },
   "mappings": {
-    "_doc": {
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "date": {
-          "type": "date"
-        },
-        "customer_id": {
-          "type": "keyword"
-        },
-        "sent": {
-          "type": "boolean"
-        },
-        "name": {
-          "type": "text"
-        },
-        "quantity": {
-          "type": "integer"
-        },
-        "vat": {
-          "type": "double",
-          "index": "false"
-        }
-      }
-    }
-  }
-}
-
-
-PUT /myorder/_doc/_mapping
-{
-  "_doc": {
     "properties": {
       "id": {
-        "type": "keyword"
+        "type": "keyword",
+        "store": true
       },
       "date": {
-        "type": "date"
+        "type": "date",
+        "store": false
       },
       "customer_id": {
-        "type": "keyword"
+        "type": "keyword",
+        "store": true
       },
       "sent": {
         "type": "boolean"
@@ -78,28 +33,67 @@ PUT /myorder/_doc/_mapping
       },
       "vat": {
         "type": "double",
-        "index": false
+        "index": true
       }
     }
   }
 }
 
-GET /myorder/_doc/_mapping
+POST /myindex/_close
 
-POST /_reindex
+POST /myindex/
+
+DELETE /myindex
+
+PUT /myindex
+
+PUT /myindex/_mapping
 {
-  "source": {
-    "index": "myorder"
-  },
-  "dest": {
-    "index": "myorder2"
+  "properties": {
+    "id": {
+      "type": "keyword",
+      "store": true
+    },
+    "date": {
+      "type": "date",
+      "store": false
+    },
+    "customer_id": {
+      "type": "keyword",
+      "store": true
+    },
+    "sent": {
+      "type": "boolean"
+    },
+    "name": {
+      "type": "text"
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "vat": {
+      "type": "double",
+      "index": false
+    }
   }
 }
 
-POST /myorder/_refresh
 
+GET /myindex/_mapping
 
-POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?refresh=true
+POST /_reindex?pretty=true
+{
+  "source": {
+    "index": "myindex"
+  },
+  "dest": {
+    "index": "myindex2"
+  }
+}
+
+POST /myindex/_refresh
+
+POST /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?refresh=true
 {
   "id": "1234",
   "date": "2013-06-07T12:14:54",
@@ -125,28 +119,27 @@ POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?refresh=true
   ]
 }
 
-POST /myorder/_forcemerge
+POST /myindex/_flush
 
-#shrink an index
-GET /_nodes
+POST /myindex/_forcemerge
 
-PUT /myorder/_settings
+GET /_nodes?pretty
+
+PUT /myindex/_settings
 {
   "settings": {
-    "index.routing.allocation.require._name": "iMacParo.local",
+    "index.routing.allocation.require._name": "1e9840cf42df",
     "index.blocks.write": true
   }
 }
 
-GET /_cluster/health
+GET /_cluster/health?pretty
 
-PUT /myorder/_settings
-{
-  "index.blocks.write":true
-}
+PUT /myindex/_settings?
+{"index.blocks.write":true}
 
 
-POST /myorder/_shrink/reduced_index
+POST /myindex/_shrink/reduced_index
 {
   "settings": {
     "index.number_of_replicas": 1,
@@ -161,55 +154,34 @@ POST /myorder/_shrink/reduced_index
 
 GET /_cluster/health?wait_for_status=yellow
 
-PUT /myorder/_settings
-{
-  "index.blocks.write":false
-}
+PUT /myindex/_settings
+{"index.blocks.write":false}
 
-#Checking if an index or type exists
+HEAD /myindex/
 
-HEAD /myorder/
+GET /myindex/_settings?pretty=true
 
+PUT /myindex/_settings
+{"index":{ "number_of_replicas": "2"}}
 
-#Managing index settings
+PUT /myindex/_settings
+{"index":{"refresh_interval": "-1"}}
 
-GET /myorder/_settings
+DELETE /myindex
 
-PUT /myorder/_settings
-{
-  "index": {
-    "number_of_replicas": "2"
-  }
-}
+PUT /myindex
 
+POST /myindex/_forcemerge
 
-PUT /myorder/_settings
-{
-  "index": {
-    "refresh_interval": "-1"
-  }
-}
-
-PUT /myorder/_settings
-{
-  "index": {
-    "refresh_interval": "1s"
-  }
-}
-
-POST /myorder/_force_merge?max_num_segments=1
-
-# Using index aliases
 GET /_aliases
 
-GET /myorder/_alias
+GET /myindex/_alias
 
-PUT /myorder/_alias/myalias1
+PUT /myindex/_alias/myalias1
 
-DELETE /myorder/_alias/myalias1
+DELETE /myindex/_alias/myalias1
 
-
-POST /myorder/_aliases/user1alias
+POST /myindex/_aliases/user1alias
 {
   "filter": {
     "term": {
@@ -220,12 +192,11 @@ POST /myorder/_aliases/user1alias
   "index_routing": "2"
 }
 
-# Rollover an index
-
 PUT /mylogs-000001
 {
   "aliases": {
-    "logs_write": {}
+    "logs_write": {},
+    "logs_write2": {}
   }
 }
 
@@ -240,11 +211,8 @@ POST /logs_write/_rollover
   }
 }
 
-DELETE /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
 
-# Indexing a document
-
-POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?timeout=5m
+POST /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
 {
   "id": "1234",
   "date": "2013-06-07T12:14:54",
@@ -270,28 +238,61 @@ POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?timeout=5m
   ]
 }
 
-# Get a document
+POST /myindex/_doc?routing=1
+{
+  "id": "1234",
+  "date": "2013-06-07T12:14:54",
+  "customer_id": "customer1",
+  "sent": true,
+  "in_stock_items": 0,
+  "items": [
+    {
+      "name": "item1",
+      "quantity": 3,
+      "vat": 20
+    },
+    {
+      "name": "item2",
+      "quantity": 2,
+      "vat": 20
+    },
+    {
+      "name": "item3",
+      "quantity": 1,
+      "vat": 10
+    }
+  ]
+}
 
-GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
+POST /myindex/_doc?consistency=one
 
-GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?preference=_local
+POST /myindex/_doc?replication=async
 
-GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?stored_fields=date,sent
+POST /myindex/_doc?version=2
 
-GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?routing=customer_id
+POST /myindex/_doc?op_type=create
 
-GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?_source=id,sent,items.*
+POST /myindex/_doc?refresh=true
 
-GET /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_source
+POST /myindex/_doc?timeout=5m
 
+GET /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
 
-# Delete a document
+GET /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?_source=date,sent
 
-DELETE /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
+GET /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?routing=customer_id
 
-# Update a document
+GET /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw?refresh=true
 
-POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+GET /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_source
+
+#Deleting a document
+
+DELETE /myindex/_doc/2qLrAfPVQvCRMe7Ku8r0Tw
+
+# Updating a document
+
+POST /myindex/_update/2qLrAfPVQvCRMe7Ku8r0Tw
 {
   "script": {
     "source": "ctx._source.in_stock_items += params.count",
@@ -301,8 +302,7 @@ POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
   }
 }
 
-
-POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+POST /myindex/_update/2qLrAfPVQvCRMe7Ku8r0Tw
 {
   "script": {
     "source": "ctx._source.in_stock_items += params.count",
@@ -315,15 +315,7 @@ POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
   }
 }
 
-
-POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
-{
-  "doc": {
-    "in_stock_items": 10
-  }
-}
-
-POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
+POST /myindex/_update/2qLrAfPVQvCRMe7Ku8r0Tw
 {
   "doc": {
     "in_stock_items": 10
@@ -331,41 +323,35 @@ POST /myorder/_doc/2qLrAfPVQvCRMe7Ku8r0Tw/_update
   "doc_as_upsert": true
 }
 
-#using bulk
 
-POST /myorder/_bulk
-{ "index":{ "_index":"myorder", "_type":"_doc", "_id":"1" } }
+POST /_bulk
+{ "index":{ "_index":"myindex", "_id":"1" } }
 { "field1" : "value1", "field2" : "value2" }
-{ "delete":{ "_index":"myorder", "_type":"_doc", "_id":"2" } }
-{ "create":{ "_index":"myorder", "_type":"_doc", "_id":"3" } }
+{ "delete":{ "_index":"myindex", "_id":"2" } }
+{ "create":{ "_index":"myindex", "_id":"3" } }
 { "field1" : "value1", "field2" : "value2" }
-{ "update":{ "_index":"myorder", "_type":"_doc", "_id":"3" } }
+{ "update":{ "_index":"myindex",  "_id":"3" } }
 { "doc":{"field1" : "value1", "field2" : "value2" }}
 
-#using Mget
+# Speeding up GET operations (multi GET)
 
 POST /_mget
 {
   "docs": [
     {
-      "_index": "myorder",
-      "_type": "_doc",
+      "_index": "myindex",
       "_id": "2qLrAfPVQvCRMe7Ku8r0Tw"
     },
     {
-      "_index": "myorder",
-      "_type": "_doc",
+      "_index": "myindex",
       "_id": "2"
     }
   ]
 }
-
-
-GET /test/type/_mget
+ 
+ 
+GET /myindex/_mget
 {
-  "ids": [
-    "1",
-    "2"
-  ]
+"ids" : ["1", "2"]
 }
-
+ 
