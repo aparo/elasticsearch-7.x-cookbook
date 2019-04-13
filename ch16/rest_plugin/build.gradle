@@ -6,7 +6,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.elasticsearch.gradle:build-tools:7.0.0-rc2"
+    classpath "org.elasticsearch.gradle:build-tools:7.0.0"
   }
 }
 
@@ -36,9 +36,9 @@ esplugin {
 // Note, the two dependencies are not really needed as the buildscript dependency gets them in already
 // they are just here as an example
 dependencies {
-  compile 'org.elasticsearch:elasticsearch:7.0.0-rc2'
+  compile 'org.elasticsearch:elasticsearch:7.0.0'
 
-  testCompile 'org.elasticsearch.test:framework:7.0.0-rc2'
+  testCompile 'org.elasticsearch.test:framework:7.0.0'
 }
 
 // Set to false to not use elasticsearch checkstyle rules
