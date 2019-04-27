@@ -75,7 +75,7 @@ public class TransportSimpleAction
     protected ShardSimpleResponse shardOperation(SimpleRequest request, ShardRouting shardRouting) {
         IndexService indexService = indicesService.indexServiceSafe(shardRouting.shardId().getIndex());
         IndexShard indexShard = indexService.getShard(shardRouting.shardId().id());
-        indexShard.store().directory();
+        //indexShard.store().directory();
         Set<String> set = new HashSet<String>();
         set.add(request.getField() + "_" + shardRouting.shardId());
         return new ShardSimpleResponse(shardRouting, set);
