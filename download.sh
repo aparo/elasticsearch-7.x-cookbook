@@ -1,5 +1,5 @@
 # Script to fast download all the stack
-VERSION="7.0.0"
+VERSION="7.2.0"
 
 declare -a links=(
     "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$VERSION.tar.gz"
