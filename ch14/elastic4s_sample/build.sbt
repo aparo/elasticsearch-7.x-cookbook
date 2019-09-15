@@ -20,7 +20,6 @@ libraryDependencies ++= {
     "com.sksamuel.elastic4s" %% "elastic4s-http-streams" % elastic4sV,
     // testing
     "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sV % "test",
-    "com.sksamuel.elastic4s" %% "elastic4s-embedded" % elastic4sV % "test",
     "org.apache.logging.log4j" % "log4j-api" % Log4jVersion,
     "org.apache.logging.log4j" % "log4j-core" % Log4jVersion,
     "org.apache.logging.log4j" % "log4j-1.2-api" % Log4jVersion,

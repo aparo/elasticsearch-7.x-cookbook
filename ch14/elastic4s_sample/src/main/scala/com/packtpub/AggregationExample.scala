@@ -1,6 +1,6 @@
 package com.packtpub
 
-import com.sksamuel.elastic4s.http.ElasticDsl._
+import com.sksamuel.elastic4s.ElasticDsl._
 
 object AggregationExample extends App with ElasticSearchClientTrait {
   val indexName = "myindex"

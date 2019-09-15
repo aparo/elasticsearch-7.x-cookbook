@@ -1,5 +1,5 @@
 package com.packtpub
-import com.sksamuel.elastic4s.http.ElasticDsl._
+import com.sksamuel.elastic4s.ElasticDsl._
 
 object IndicesExample extends App with ElasticSearchClientTrait {
   val indexName = "test"

@@ -1,16 +1,17 @@
 package com.packtpub
 
-import com.sksamuel.elastic4s.http.ElasticDsl._
-import com.sksamuel.elastic4s.http.{ElasticClient, ElasticProperties}
+import com.sksamuel.elastic4s.ElasticDsl._
+import com.sksamuel.elastic4s.http.JavaClient
+import com.sksamuel.elastic4s.{ElasticClient, ElasticProperties}
 import org.elasticsearch.client.RestClient
 
 object ClientSample extends App {
-  val client = ElasticClient(ElasticProperties("http://127.0.0.1:9200"))
+  val client = ElasticClient(JavaClient(ElasticProperties("http://127.0.0.1:9200")))
 
   // await is a helper method to make this operation synchronous instead of async
   // You would normally avoid doing this in a real program as it will block your thread
   client.execute {
-    indexInto("bands" / "artists") fields "name" -> "coldplay"
+    indexInto("bands" ) fields "name" -> "coldplay"
   }.await
 
   // we need to wait until the index operation has been flushed by the server.

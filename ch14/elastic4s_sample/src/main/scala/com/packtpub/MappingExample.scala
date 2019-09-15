@@ -1,7 +1,6 @@
 package com.packtpub
 
-import com.sksamuel.elastic4s.http.ElasticDsl._
-import com.sksamuel.elastic4s.http.index.mappings.IndexMappings
+import com.sksamuel.elastic4s.ElasticDsl._
 
 object MappingExample extends App with ElasticSearchClientTrait {
   val indexName = "myindex"
@@ -19,14 +18,14 @@ object MappingExample extends App with ElasticSearchClientTrait {
   Thread.sleep(2000)
 
   client.execute {
-    putMapping(indexName / "_doc").as(
+    putMapping(indexName).as(
       keywordField("tag")
     )
   }.await
 
   val myMapping = client
     .execute {
-      getMapping(indexName / "_doc")
+      getMapping(indexName)
     }
     .await
     .result

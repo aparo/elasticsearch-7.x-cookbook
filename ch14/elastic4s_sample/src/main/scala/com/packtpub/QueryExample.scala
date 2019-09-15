@@ -1,8 +1,8 @@
 package com.packtpub
 
-import com.sksamuel.elastic4s.http.ElasticDsl._
-import com.sksamuel.elastic4s.circe._
+import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.Indexable
+import com.sksamuel.elastic4s.circe._
 import io.circe.generic.auto._
 
 object QueryExample extends App with ElasticSearchClientTrait {
@@ -10,6 +10,7 @@ object QueryExample extends App with ElasticSearchClientTrait {
   val typeName = "_doc"
 
   case class Place(id: Int, name: String)
+
   case class Cafe(name: String, place: Place)
 
   implicitly[Indexable[Cafe]]
@@ -18,34 +19,34 @@ object QueryExample extends App with ElasticSearchClientTrait {
 
   client.execute {
     bulk(
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("0")
         .source(Cafe("nespresso", Place(20, "Milan"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("1")
         .source(Cafe("java", Place(60, "Rome"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("2")
         .source(Cafe("nespresso", Place(70, "Paris"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("3")
         .source(Cafe("java", Place(80, "Chicago"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("4")
         .source(Cafe("nespresso", Place(10, "London"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("5")
         .source(Cafe("java", Place(60, "Milan"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("6")
         .source(Cafe("nespresso", Place(25, "Rome"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("7")
         .source(Cafe("java", Place(56, "Paris"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("8")
         .source(Cafe("nespresso", Place(23, "Chicago"))),
-      indexInto(indexName / typeName)
+      indexInto(indexName)
         .id("9")
         .source(Cafe("java", Place(89, "London")))
     )

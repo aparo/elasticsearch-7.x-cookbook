@@ -1,6 +1,6 @@
 package com.packtpub
 
-import com.sksamuel.elastic4s.http.ElasticDsl._
+import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.circe._
 
 object DocumentExample extends App with ElasticSearchClientTrait {
@@ -9,7 +9,7 @@ object DocumentExample extends App with ElasticSearchClientTrait {
   ensureIndexMapping(indexName)
 
   client.execute {
-    indexInto(indexName / "_doc") id "0" fields (
+    indexInto(indexName) id "0" fields (
       "name" -> "brown",
       "tag" -> List("nice", "simple")
     )
