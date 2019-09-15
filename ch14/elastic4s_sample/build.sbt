@@ -2,21 +2,20 @@ organization := "com.packtpub"
 
 name := """elastic4s-sample"""
 
-version := "0.0.2"
+version := "0.0.3"
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.12.10"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
 libraryDependencies ++= {
-  val elastic4sV = "6.5.0"
-  val scalaTestV = "3.0.5"
-  val Log4jVersion = "2.11.1"
+  val elastic4sV = "7.3.1"
+  val scalaTestV = "3.0.8"
+  val Log4jVersion = "2.12.1"
   Seq(
-    "com.sksamuel.elastic4s" %% "elastic4s-core" % elastic4sV,
-    "com.sksamuel.elastic4s" %% "elastic4s-circe" % elastic4sV,
+    "com.sksamuel.elastic4s" %% "elastic4s-json-circe" % elastic4sV,
     // for the http client
-    "com.sksamuel.elastic4s" %% "elastic4s-http" % elastic4sV,
+    "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sV,
     // if you want to use reactive streams
     "com.sksamuel.elastic4s" %% "elastic4s-http-streams" % elastic4sV,
     // testing

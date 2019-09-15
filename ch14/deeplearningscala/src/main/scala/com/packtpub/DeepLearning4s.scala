@@ -1,9 +1,8 @@
 package com.packtpub
 
-import com.sksamuel.elastic4s.Indexable
+import com.sksamuel.elastic4s.{ElasticClient, ElasticProperties, Indexable}
 import com.sksamuel.elastic4s.circe._
-import com.sksamuel.elastic4s.http.ElasticDsl._
-import com.sksamuel.elastic4s.http.{ElasticClient, ElasticProperties}
+import com.sksamuel.elastic4s.http._
 import com.typesafe.scalalogging.LazyLogging
 import io.circe.generic.auto._
 import org.deeplearning4j.eval.Evaluation
@@ -23,8 +22,9 @@ object DeepLearning4s extends App with LazyLogging {
 
 
   lazy val client: ElasticClient = {
-    ElasticClient(ElasticProperties("http://127.0.0.1:9200"))
+    ElasticClient(JavaClient(ElasticProperties("http://127.0.0.1:9200")))
   }
+  import com.sksamuel.elastic4s.ElasticDsl._
 
   lazy val indexName = "iris"
 
