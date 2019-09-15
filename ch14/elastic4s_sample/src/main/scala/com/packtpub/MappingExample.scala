@@ -9,8 +9,8 @@ object MappingExample extends App with ElasticSearchClientTrait {
   }
 
   client.execute {
-    createIndex(indexName) shards 1 replicas 0 mappings (
-      mapping("_doc") as (
+    createIndex(indexName) shards 1 replicas 0 mapping (
+      properties(
         textField("name").termVector("with_positions_offsets").stored(true)
       )
     )

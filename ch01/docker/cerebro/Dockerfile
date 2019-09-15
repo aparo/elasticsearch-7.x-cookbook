@@ -2,7 +2,7 @@
 
 FROM openjdk:8u131-jre-alpine
 
-ARG CEREBRO_VERSION=0.8.3
+ARG CEREBRO_VERSION=0.8.4
 
 LABEL name="cerebro" version=${CEREBRO_VERSION}
 

@@ -1,39 +1,39 @@
 package com.packtpub
 
+import com.sksamuel.elastic4s._
 import com.sksamuel.elastic4s.ElasticDsl._
+import com.sksamuel.elastic4s.{ElasticClient, ElasticProperties}
 import com.sksamuel.elastic4s.http._
 import com.sksamuel.elastic4s.requests.common.HealthStatus
-import com.sksamuel.elastic4s.{ElasticClient, ElasticProperties}
 
 trait ElasticSearchClientTrait {
   lazy val client = ElasticClient(
     JavaClient(ElasticProperties(s"http://localhost:9200"))
   )
 
-  def ensureIndexMapping(indexName: String,
-                         mappingName: String = "_doc"): Unit = {
+  def ensureIndexMapping(indexName: String): Unit = {
     if (client
-      .execute {
-        indexExists(indexName)
-      }
-      .await
-      .result
-      .isExists) {
+          .execute {
+            indexExists(indexName)
+          }
+          .await
+          .result
+          .isExists) {
       client.execute {
         deleteIndex(indexName)
       }.await
     }
 
     client.execute {
-      createIndex(indexName) shards 1 replicas 0 mappings (
-        mapping(mappingName).as(
+      createIndex(indexName) shards 1 replicas 0 mapping (
+        properties(
           textField("name") termVector "with_positions_offsets" stored true,
           longField("size"),
           doubleField("price"),
           geopointField("location"),
           keywordField("tag") stored true
         )
-        )
+      )
     }.await
 
     client.execute {
@@ -43,7 +43,6 @@ trait ElasticSearchClientTrait {
   }
 
   def populateSampleData(indexName: String,
-                         mappingName: String,
                          size: Int = 1000): Unit = {
     import scala.util.Random
     val tags = List("cool", "nice", "bad", "awesome", "good")
@@ -56,7 +55,7 @@ trait ElasticSearchClientTrait {
             "size" -> (i % 10) * 8,
             "price" -> (i % 10) * 1.2,
             "location" -> List(30.0 * Random.nextDouble(),
-              30.0 * Random.nextDouble()),
+                               30.0 * Random.nextDouble()),
             "tag" -> Random.shuffle(tags).take(3)
           )
       }: _*)

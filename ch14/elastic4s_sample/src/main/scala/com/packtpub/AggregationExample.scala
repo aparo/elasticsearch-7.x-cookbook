@@ -4,9 +4,8 @@ import com.sksamuel.elastic4s.ElasticDsl._
 
 object AggregationExample extends App with ElasticSearchClientTrait {
   val indexName = "myindex"
-  val typeName = "_doc"
-  ensureIndexMapping(indexName, typeName)
-  populateSampleData(indexName, typeName, 1000)
+  ensureIndexMapping(indexName)
+  populateSampleData(indexName, 1000)
 
   val resp = client
     .execute {

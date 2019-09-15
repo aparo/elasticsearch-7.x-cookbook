@@ -7,7 +7,6 @@ import io.circe.generic.auto._
 
 object QueryExample extends App with ElasticSearchClientTrait {
   val indexName = "myindex"
-  val typeName = "_doc"
 
   case class Place(id: Int, name: String)
 
@@ -15,7 +14,7 @@ object QueryExample extends App with ElasticSearchClientTrait {
 
   implicitly[Indexable[Cafe]]
 
-  ensureIndexMapping(indexName, typeName)
+  ensureIndexMapping(indexName)
 
   client.execute {
     bulk(

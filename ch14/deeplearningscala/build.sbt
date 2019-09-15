@@ -31,6 +31,7 @@ libraryDependencies ++= {
     "org.apache.logging.log4j" % "log4j-core" % Log4jVersion,
     "org.apache.logging.log4j" % "log4j-1.2-api" % Log4jVersion,
     "org.scalatest" %% "scalatest" % scalaTestV % "test",
+    "ch.qos.logback" % "logback-classic" % "1.2.3",
     // deep learning libraries
     "com.fasterxml.jackson.core" % "jackson-core" % "2.9.9",
     "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.9.3",
